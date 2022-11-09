@@ -1,0 +1,29 @@
+schemaVersion: 2.0.0
+
+metadataTest:
+  env:
+    - key: PORT
+      value: 8080
+  labels:
+    - key: application
+      value: kafka-example-java
+    - key: author
+      value: James Oliver
+    - key: description
+      value: Example backend service utilising Apache Kafka written in Java.
+    - key: build-date
+      value: ^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}Z$
+      isRegex: true
+  exposedPorts: [ "8080" ]
+  cmd: [ "java", "-jar", "app.jar" ]
+  workdir: "/app"
+#  user: "docker" # user key is currently unsupported in GitHub Actions
+
+fileExistenceTests:
+  - name: 'Java executable'
+    path: '/app/kafka-example-java.jar'
+    shouldExist: true
+    permissions: '-r-x------'
+    uid: 65532
+    gid: 65532
+    isExecutableBy: 'owner'
